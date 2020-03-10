@@ -1,5 +1,5 @@
 """
-dict_client.py 在线字典查询2.0客户端
+online dictionary client
 evn:python3.6
 """
 from socket import *
@@ -29,7 +29,7 @@ class DictClientHandleRequest:
 
     def register(self):
         """
-        注册账号
+        register function
         """
         while True:
             name = input("Register Name:")
@@ -49,7 +49,6 @@ class DictClientHandleRequest:
             msg_server = self.sockfd.recv(128).decode()
 
             if msg_server == self._pro.VerifyMsg:
-                # 注册成功跳转界面
                 print("Register Successfully")
                 self.jump_page(name)
             else:
@@ -58,7 +57,7 @@ class DictClientHandleRequest:
 
     def login(self):
         """
-        登录客户端
+        login function
         """
         name = input("Name:")
         password = getpass.getpass()
@@ -69,7 +68,6 @@ class DictClientHandleRequest:
         msg_server = self.sockfd.recv(128).decode()
 
         if msg_server == self._pro.VerifyMsg:
-            # 登录成功跳转界面
             print("Login Successfully")
             self.jump_page(name)
         else:
@@ -78,7 +76,7 @@ class DictClientHandleRequest:
 
     def quit(self):
         """
-        退出Dict客户端
+        quit dict client
         """
         self.sockfd.send(self._pro.Quit.encode())
         self.sockfd.close()
@@ -148,7 +146,7 @@ class DictClientHandleRequest:
 
 class DictClient:
     """
-    客户端
+    dict client
     """
 
     def __init__(self):
@@ -157,9 +155,6 @@ class DictClient:
         self._request = DictClientHandleRequest(self.sockfd)
 
     def __create_socket(self):
-        """
-        创建套接字
-        """
         try:
             self.sockfd.connect(self._sock.Server_ADDR)
         except Exception as e:
@@ -168,7 +163,7 @@ class DictClient:
 
     def tcp_client(self):
         """
-        连接客户端,客户端操作
+        run client
         """
         self.__create_socket()
 
