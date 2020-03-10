@@ -1,5 +1,6 @@
 """
-ftp 文件传输客户端
+ftp_file_transfer client
+evn:python3.6
 """
 
 from socket import *
@@ -10,7 +11,11 @@ import sys
 
 class FTPClientHandleRequest:
     """
-    客户端查看文件列表,下载,上传,退出
+    Client:
+    check file list
+    download
+    upload
+    exit client
     """
 
     def __init__(self, sockfd):
@@ -19,7 +24,7 @@ class FTPClientHandleRequest:
 
     def choose_ui_list(self):
         """
-        选择界面
+        choose ui in console
         """
         print("\n=====File Command=====")
         print("******** list ********")
@@ -30,14 +35,13 @@ class FTPClientHandleRequest:
 
     def check_list(self):
         """
-        查看文件列表
+        check file
         """
-        # 发送请求
+
         self.sockfd.send(self._pro.FileList.encode())
-        # 等待服务端回复
+        
         data = self.sockfd.recv(128).decode()
         if data == self._pro.VerifyMsg:
-            # 一次接收所有文件名
             filelist = self.sockfd.recv(4096)
             print(filelist.decode())
         else:
@@ -45,8 +49,8 @@ class FTPClientHandleRequest:
 
     def download_file(self, filename):
         """
-        下载文件
-        :param filename: 目标文件名
+        download file
+        :param filename: target filename
         """
         self.sockfd.send((self._pro.DownloadFile + " " + filename).encode())
 
@@ -64,8 +68,8 @@ class FTPClientHandleRequest:
 
     def upload_file(self, filename):
         """
-        上传文件
-        :param filename: 文件名(可以是完整路径的文件)
+        upload file
+        :param filename: target file (or the file contains the full path)
         """
         try:
             f = open(filename, "rb")
@@ -89,8 +93,7 @@ class FTPClientHandleRequest:
 
     def quit(self):
         """
-        退出TFP传输服务
-        :return:
+        quit ftp service
         """
         self.sockfd.send(self._pro.Quit.encode())
         self.sockfd.close()
@@ -99,7 +102,7 @@ class FTPClientHandleRequest:
 
 class FTPClient:
     """
-    客户端连接
+    client connection
     """
 
     def __init__(self):
@@ -109,9 +112,7 @@ class FTPClient:
         self.request = FTPClientHandleRequest(self.sockfd)
 
     def create_socket(self):
-        """
-        创建套接字
-        """
+
         try:
             self.sockfd.connect(self._sock.Server_ADDR)
         except Exception:
@@ -120,7 +121,7 @@ class FTPClient:
 
     def tcp_client(self):
         """
-        客户端运行
+        run tcp client
         """
         self.create_socket()
 
