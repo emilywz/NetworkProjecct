@@ -1,5 +1,5 @@
 """
-dict_server.py 在线字典查询2.0服务端
+dictionary online server
 evn:python3.6
 """
 from model import *
@@ -75,22 +75,12 @@ class DictServerHandleRequest(Thread):
             self.connfd.send(self._pro.FailMsg.encode())
 
 
-
-
-
-
-
-
-
 class DictServer:
     def __init__(self):
         self._sock = SocketModel()
         self.__create_socket()
 
     def __create_socket(self):
-        """
-        创建套接字
-        """
         self.sockfd = socket()
         self.sockfd.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.sockfd.bind(self._sock.Server_ADDR)
@@ -99,10 +89,9 @@ class DictServer:
 
     def tcp_server(self):
         """
-        服务端运行
+        run tcp server
         """
         while True:
-            # 循环接收客户端连接
             try:
                 connfd, addr = self.sockfd.accept()
                 print("Connect from...", addr)
