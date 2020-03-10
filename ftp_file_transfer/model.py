@@ -1,5 +1,9 @@
-from socket import *
+#!/usr/bin/env python
+# -*- coding:utf-8 -*- 
+#Author:Emily_Wang
+#evn:python3.6
 
+from socket import *
 
 class SocketModel:
     HOST = "0.0.0.0"
@@ -8,7 +12,7 @@ class SocketModel:
 
 
 class ProtocalModel:
-    FTPFilePath="/home/tarena/code/FTP/"
+    FTPFilePath="../code/FTP/"
     FileList = "L"
     DownloadFile = "D"
     UploadFile = "U"
