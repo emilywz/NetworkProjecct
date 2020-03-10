@@ -1,12 +1,12 @@
 """
-数据库操作,提供数据服务端需要的数据
+database 
+evn：mysql5.7
 """
 
 import pymysql,hashlib
 
-SALT="#%%&#@"
+SALT="####@@@@"
 
-# 密码加密
 def hash_sha512(password):
     hash_obj=hashlib.sha512(SALT.encode())
     hash_obj.update(password.encode())
@@ -17,7 +17,7 @@ class DictDataBaseModel:
     def __init__(self,host="localhost",
                 port=3306,
                 user='root',
-                password='123456',
+                password='******',
                 database=None,
                 charset='utf8'):
         self.host=host
@@ -29,7 +29,9 @@ class DictDataBaseModel:
         self.connect_db()
 
     def connect_db(self):
-        # 连接数据库
+        """
+         connect database
+        """
         self.db = pymysql.connect(host=self.host,
                               port=self.port,
                               user=self.user,
@@ -38,11 +40,15 @@ class DictDataBaseModel:
                               charset=self.charset)
 
     def create_cur(self):
-        # 生成游标对象(操作数据库,执行sql语句)
+        """
+        create cursor object
+        """
         self.cur = self.db.cursor()
 
     def close(self):
-        # 关闭游标和数据库连接
+        """
+        close databse and cursor
+        """
         self.cur.close()
         self.db.close()
 
