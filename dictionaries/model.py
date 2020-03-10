@@ -1,6 +1,7 @@
-"""
-常量,协议模块
-"""
+#!/usr/bin/env python
+# -*- coding:utf-8 -*- 
+#Author:Emily_Wang
+#evn:python3.6
 
 class SocketModel:
     HOST = "0.0.0.0"
