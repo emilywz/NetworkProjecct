@@ -1,5 +1,6 @@
 """
-FTP 文件服务器
+FTP_file_transfer server
+evn:python3.6
 """
 from time import *
 from socket import *
@@ -10,7 +11,11 @@ import os, sys
 
 class FTPServerHandleRequest(Thread):
     """
-    服务端查看列表,下载,上传,退出处理
+    server:
+    check file list
+    upload file
+    download file
+    exit server
     """
 
     def __init__(self, connfd):
@@ -34,8 +39,8 @@ class FTPServerHandleRequest(Thread):
 
     def check_list(self):
         """
-        查看文件库文件
-        :param connfd:连接套接字
+        check file list
+        :param connfd: connection socket
         """
         files = os.listdir(self._pro.FTPFilePath)
         if not files:
@@ -44,7 +49,6 @@ class FTPServerHandleRequest(Thread):
         else:
             self.connfd.send(self._pro.VerifyMsg.encode())
 
-        # 拼接所有文件名
         filelist = ''
         for file in files:
             if file[0] != "." and os.path.isfile(self._pro.FTPFilePath + file):
@@ -54,8 +58,8 @@ class FTPServerHandleRequest(Thread):
 
     def download_file(self, filename):
         """
-        下载文件
-        :param filename: 目标文件
+        download file
+        :param filename: target file
         :return:
         """
         try:
@@ -80,8 +84,8 @@ class FTPServerHandleRequest(Thread):
 
     def upload_file(self, filename):
         """
-        上传文件
-        :param filename: 目标文件
+        upload file
+        :param filename: target file
         """
         if os.path.exists(self._pro.FTPFilePath + filename):
             self.connfd.send("File exist,please reselect".encode())
@@ -89,7 +93,6 @@ class FTPServerHandleRequest(Thread):
         else:
             self.connfd.send(self._pro.VerifyMsg.encode())
 
-        # 接收文件
         sleep(0.1)
         with open(self._pro.FTPFilePath + filename, "wb") as f:
             while True:
@@ -101,7 +104,7 @@ class FTPServerHandleRequest(Thread):
 
 class FTPServer:
     """
-    FTP服务端操作
+    FTP server
     """
 
     def __init__(self):
@@ -111,9 +114,7 @@ class FTPServer:
         self.sockfd = socket()
 
     def create_socket(self):
-        """
-        创建套接字
-        """
+
         self.sockfd.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.sockfd.bind(self._sock.Server_ADDR)
 
@@ -122,12 +123,11 @@ class FTPServer:
 
     def tcp_server(self):
         """
-        服务端运行
+        run server
         """
         self.create_socket()
 
         while True:
-            # 循环接收客户端连接
             try:
                 connfd, addr = self.sockfd.accept()
                 print("Connect from...", addr)
@@ -137,7 +137,6 @@ class FTPServer:
                 print(Exception)
                 continue
 
-            # 创建线程
             t = FTPServerHandleRequest(connfd)
             t.setDaemon(True)
             t.start()
